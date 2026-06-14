@@ -1,26 +1,28 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import { router } from "expo-router";
 
 import { RefreshControl, ScrollView } from "react-native";
 
+import { ArrowUp, Plus } from "lucide-react-native";
+
 import EmptyState from "../../components/ui/AppEmpty";
+import AppFab from "../../components/ui/AppFab";
 import AppFilterChips from "../../components/ui/AppFilterChips";
 import AppLayout from "../../components/ui/AppLayout";
 import AppSearchBar from "../../components/ui/AppSearchBar";
-
-import AppFab from "../../components/ui/AppFab";
 
 import AduanCard from "../../components/cards/AduanCard";
 
 import { aduan } from "../../mock/aduan";
 
 export default function AduanScreen() {
+  const scrollRef = useRef(null);
+
   const [search, setSearch] = useState("");
-
   const [filter, setFilter] = useState("all");
-
   const [refreshing, setRefreshing] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -35,17 +37,14 @@ export default function AduanScreen() {
       label: "Semua",
       value: "all",
     },
-
     {
       label: "Menunggu",
       value: "pending",
     },
-
     {
       label: "Diproses",
       value: "process",
     },
-
     {
       label: "Selesai",
       value: "done",
@@ -64,9 +63,29 @@ export default function AduanScreen() {
     });
   }, [search, filter]);
 
+  const handleFabPress = () => {
+    if (showScrollTop) {
+      scrollRef.current?.scrollTo({
+        y: 0,
+        animated: true,
+      });
+
+      return;
+    }
+
+    router.push("/aduan/create");
+  };
+
   return (
     <AppLayout>
       <ScrollView
+        ref={scrollRef}
+        onScroll={(event) => {
+          const offsetY = event.nativeEvent.contentOffset.y;
+
+          setShowScrollTop(offsetY > 100);
+        }}
+        scrollEventThrottle={16}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }
@@ -97,8 +116,15 @@ export default function AduanScreen() {
           filteredData.map((item) => <AduanCard key={item.id} item={item} />)
         )}
       </ScrollView>
-
-      <AppFab onPress={() => router.push("/aduan/create")} />
+      <AppFab
+        icon={showScrollTop ? ArrowUp : Plus}
+        onPress={handleFabPress}
+        backgroundColor={
+          showScrollTop
+            ? "#2563EB" // biru = scroll ke atas
+            : "#16A34A" // hijau = tambah aduan
+        }
+      />
     </AppLayout>
   );
 }

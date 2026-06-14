@@ -1,9 +1,11 @@
 import { router } from "expo-router";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import { Image, TouchableOpacity, View } from "react-native";
 
+import { ArrowUp } from "lucide-react-native";
 import AppEmpty from "../../components/ui/AppEmpty";
+import AppFab from "../../components/ui/AppFab";
 import AppLayout from "../../components/ui/AppLayout";
 import AppScrollView from "../../components/ui/AppScrollView";
 import AppSearchInput from "../../components/ui/AppSearchBar";
@@ -13,6 +15,8 @@ import { berita } from "../../mock/berita";
 
 export default function BeritaScreen() {
   const [search, setSearch] = useState("");
+  const scrollRef = useRef(null);
+  const [showFab, setShowFab] = useState(false);
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -33,8 +37,19 @@ export default function BeritaScreen() {
   return (
     <AppLayout>
       <AppScrollView
+        ref={scrollRef}
         refreshing={refreshing}
         onRefresh={onRefresh}
+        onScroll={(event) => {
+          const offsetY = event.nativeEvent.contentOffset.y;
+
+          setShowFab((prev) => {
+            if (offsetY > 200 && !prev) return true;
+            if (offsetY <= 200 && prev) return false;
+            return prev;
+          });
+        }}
+        scrollEventThrottle={16}
         contentContainerStyle={{
           padding: 16,
           paddingBottom: 40,
@@ -102,6 +117,18 @@ export default function BeritaScreen() {
           ))
         )}
       </AppScrollView>
+      {showFab && (
+        <AppFab
+          icon={ArrowUp}
+          backgroundColor="#2563EB"
+          onPress={() => {
+            scrollRef.current?.scrollTo({
+              y: 0,
+              animated: true,
+            });
+          }}
+        />
+      )}
     </AppLayout>
   );
 }

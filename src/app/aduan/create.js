@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Alert } from "react-native";
+import { Alert, View } from "react-native";
 
 import AppButton from "../../components/ui/AppButton";
 import AppHeader from "../../components/ui/AppHeader";
@@ -96,6 +96,7 @@ export default function CreateAduanScreen() {
         />
 
         <AppImagePicker value={foto} onChange={setFoto} />
+        <View style={{ height: 12 }} />
 
         <AppButton title="Kirim Aduan" onPress={handleSubmit} />
       </AppScrollView>

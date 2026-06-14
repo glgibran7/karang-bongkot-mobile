@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert } from "react-native";
+import { Alert, View } from "react-native";
 
 import AppButton from "../../components/ui/AppButton";
 import AppHeader from "../../components/ui/AppHeader";
@@ -15,24 +15,16 @@ import { jenisSurat } from "../../mock/jenisSurat";
 
 export default function CreateSuratScreen() {
   const [jenis, setJenis] = useState("");
-
   const [nama, setNama] = useState("");
-
   const [nik, setNik] = useState("");
-
   const [telepon, setTelepon] = useState("");
-
   const [keperluan, setKeperluan] = useState("");
-
   //   const [lampiran, setLampiran] = useState(null);
 
   const handleSubmit = () => {
     if (!jenis) return alert("Pilih jenis surat");
-
     if (!nama) return alert("Nama wajib diisi");
-
     if (!nik) return alert("NIK wajib diisi");
-
     Alert.alert("Berhasil", "Pengajuan surat berhasil dikirim.");
     console.log({
       jenis,
@@ -64,6 +56,8 @@ export default function CreateSuratScreen() {
           options={jenisSurat}
           onChange={setJenis}
         />
+
+        <View style={{ height: 12 }} />
 
         <AppInput label="Nama Lengkap" value={nama} onChangeText={setNama} />
 

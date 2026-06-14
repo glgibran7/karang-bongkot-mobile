@@ -216,7 +216,7 @@ export default function HomeScreen() {
           Berita Lainnya
         </AppText>
 
-        {berita.slice(1).map((item) => (
+        {berita.slice(1, 3).map((item) => (
           <BeritaListItem key={item.id} item={item} />
         ))}
 

@@ -22,7 +22,7 @@ export default function ForgotPasswordScreen() {
               marginTop: 8,
             }}
           >
-            Jika Anda lupa password akun, silakan hubungi petugas desa untuk
+            Jika Anda lupa password akun, silakan hubungi admin desa untuk
             melakukan reset password.
           </AppText>
         </AppCard>

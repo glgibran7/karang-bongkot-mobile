@@ -1,6 +1,7 @@
 import { router } from "expo-router";
 import { useState } from "react";
 
+import { ArrowUp, Plus } from "lucide-react-native";
 import AppEmpty from "../../components/ui/AppEmpty";
 import AppFab from "../../components/ui/AppFab";
 import AppFilterChips from "../../components/ui/AppFilterChips";
@@ -15,6 +16,7 @@ import { surat } from "../../mock/surat";
 export default function SuratScreen() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const filterOptions = [
     {
@@ -46,6 +48,17 @@ export default function SuratScreen() {
     return matchSearch && matchStatus;
   });
 
+  const handleFabPress = () => {
+    if (showScrollTop) {
+      scrollRef.current?.scrollTo({
+        y: 0,
+        animated: true,
+      });
+      return;
+    }
+    router.push("/surat/create");
+  };
+
   return (
     <AppLayout>
       <AppScrollView
@@ -75,8 +88,15 @@ export default function SuratScreen() {
           filteredData.map((item) => <SuratCard key={item.id} item={item} />)
         )}
       </AppScrollView>
-
-      <AppFab onPress={() => router.push("/surat/create")} />
+      <AppFab
+        icon={showScrollTop ? ArrowUp : Plus}
+        onPress={handleFabPress}
+        backgroundColor={
+          showScrollTop
+            ? "#2563EB" // biru = scroll ke atas
+            : "#16A34A" // hijau = tambah aduan
+        }
+      />
     </AppLayout>
   );
 }

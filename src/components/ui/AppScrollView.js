@@ -1,20 +1,25 @@
+import { forwardRef } from "react";
 import { RefreshControl, ScrollView } from "react-native";
 
-export default function AppScrollView({
-  children,
-  refreshing,
-  onRefresh,
-  contentContainerStyle,
-}) {
-  return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={contentContainerStyle}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
-      {children}
-    </ScrollView>
-  );
-}
+const AppScrollView = forwardRef(
+  (
+    { children, refreshing, onRefresh, contentContainerStyle, ...props },
+    ref
+  ) => {
+    return (
+      <ScrollView
+        ref={ref}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={contentContainerStyle}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        {...props}
+      >
+        {children}
+      </ScrollView>
+    );
+  }
+);
+
+export default AppScrollView;

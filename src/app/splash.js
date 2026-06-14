@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Image, View } from "react-native";
+import { ActivityIndicator, Image, View } from "react-native";
 
 import { router } from "expo-router";
 
@@ -24,7 +24,7 @@ export default function SplashScreen() {
     }, 2000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [token]);
 
   return (
     <AppLayout>
@@ -36,20 +36,44 @@ export default function SplashScreen() {
           padding: 24,
         }}
       >
-        <Image
-          source={require("../../assets/images/logo-desa.png")}
+        <View
           style={{
-            width: 90,
-            height: 90,
+            width: 140,
+            height: 140,
+            borderRadius: 40,
+
+            backgroundColor: theme.colors.card,
+
+            justifyContent: "center",
+            alignItems: "center",
+
+            shadowColor: "#000",
+            shadowOpacity: 0.08,
+            shadowRadius: 12,
+            shadowOffset: {
+              width: 0,
+              height: 4,
+            },
+
+            elevation: 5,
           }}
-          resizeMode="contain"
-        />
+        >
+          <Image
+            source={require("../../assets/images/logo-desa.png")}
+            style={{
+              width: 90,
+              height: 90,
+            }}
+            resizeMode="contain"
+          />
+        </View>
 
         <AppText
           size="title"
           weight="700"
           style={{
-            marginTop: 20,
+            marginTop: 28,
+            fontSize: 30,
           }}
         >
           Desa Digital
@@ -59,10 +83,20 @@ export default function SplashScreen() {
           style={{
             marginTop: 8,
             textAlign: "center",
+            color: theme.colors.textSecondary,
+            maxWidth: 260,
           }}
         >
-          Pelayanan desa modern dalam genggaman
+          Pelayanan desa modern, cepat, transparan dan mudah diakses oleh warga.
         </AppText>
+
+        <View
+          style={{
+            marginTop: 32,
+          }}
+        >
+          <ActivityIndicator size="small" color={theme.colors.primary} />
+        </View>
       </View>
 
       <View
@@ -71,6 +105,16 @@ export default function SplashScreen() {
           alignItems: "center",
         }}
       >
+        <AppText
+          size="small"
+          color={theme.colors.textSecondary}
+          style={{
+            marginBottom: 4,
+          }}
+        >
+          Powered by Outlook Project
+        </AppText>
+
         <AppText size="small" color={theme.colors.textSecondary}>
           Version 1.0.0
         </AppText>
